@@ -35,7 +35,7 @@ class VisitLogMiddleware(MiddlewareMixin):
     def process_request(self, request):
         path = request.path.lower()
 
-        # Skip admin, static, media, api, and asset files
+        # Skip admin, static, media, api, and assets
         if (
             path.startswith("/admin")
             or path.startswith("/static")
@@ -46,25 +46,19 @@ class VisitLogMiddleware(MiddlewareMixin):
             return None
 
         ua = request.META.get("HTTP_USER_AGENT", "").lower()
-        # Skip known bots/crawlers
         if any(keyword in ua for keyword in ["bot", "crawl", "spider"]):
             return None
 
         ip = get_client_ip(request)
-
-        # Only override localhost IP in DEBUG mode
         if settings.DEBUG and ip in ["127.0.0.1", "::1"]:
-            ip = "8.8.8.8"  # Fake IP for dev testing
+            ip = "8.8.8.8"  # fake IP for dev testing
 
-        # Fetch geo data
         country, region, city, latitude, longitude = get_geo_data(ip)
 
-        # Check if we already logged this IP in the last hour
+        # Only log once per hour per IP
         one_hour_ago = timezone.now() - timedelta(hours=1)
         recent_log_exists = VisitLog.objects.filter(ip=ip, timestamp__gte=one_hour_ago).exists()
-        recent_email_exists = VisitLog.objects.filter(ip=ip, email_sent=True, timestamp__gte=one_hour_ago).exists()
 
-        # Only create a log if not recently logged
         if not recent_log_exists:
             log = VisitLog.objects.create(
                 ip=ip,
@@ -75,13 +69,18 @@ class VisitLogMiddleware(MiddlewareMixin):
                 longitude=longitude,
                 path=request.path,
                 user_agent=request.META.get("HTTP_USER_AGENT", ""),
-                email_sent=False  # initially false
             )
         else:
             log = None
 
-        # Send email only once per IP per hour
-        if log and not recent_email_exists:
+        # Email throttling using session
+        visitor_key = f"visitor_email_last_sent_{ip}"
+        last_sent = request.session.get(visitor_key)
+        now = timezone.now()
+        last_sent_dt = last_sent and timezone.datetime.fromisoformat(last_sent)
+
+        if log and (not last_sent_dt or now - last_sent_dt > timedelta(hours=1)):
+            # Send email
             subject = f"New Visitor from {country or 'Unknown'} ({ip})"
             message = (
                 f"IP: {log.ip}\n"
@@ -94,7 +93,6 @@ class VisitLogMiddleware(MiddlewareMixin):
                 f"User Agent: {log.user_agent}\n"
                 f"Timestamp: {log.timestamp}\n"
             )
-
             try:
                 send_mail(
                     subject,
@@ -103,9 +101,7 @@ class VisitLogMiddleware(MiddlewareMixin):
                     settings.ADMIN_EMAILS,
                     fail_silently=True,
                 )
-                # mark email_sent True in DB
-                log.email_sent = True
-                log.save(update_fields=["email_sent"])
+                request.session[visitor_key] = now.isoformat()
             except Exception:
                 pass
 
