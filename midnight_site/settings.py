@@ -86,14 +86,27 @@ import dj_database_url
 # ✅ Database configuration
 
 # Use DATABASE_URL if set (PostgreSQL on Render), otherwise fallback to local SQLite
-DATABASES = {
-    "default": dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",  # fallback to SQLite
-        conn_max_age=600,
-        ssl_require=True  # only used for PostgreSQL
-    )
-}
+BASE_DIR = Path(__file__).resolve().parent.parent
 
+DATABASE_URL = os.environ.get("DATABASE_URL")  # None if not set
+
+if DATABASE_URL:
+    # Use PostgreSQL
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:
+    # Use local SQLite
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # ---------------------------
 # TIMEZONE
