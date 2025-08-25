@@ -14,10 +14,13 @@ DEBUG = os.getenv("DEBUG", "True") == "True"
 import os
 
 ALLOWED_HOSTS = [
-    ".onrender.com",
-    "midnight-tk.com",
-    "www.midnight-tk.com"
+    "127.0.0.1",        # for local testing
+    "localhost",        # for local testing
+    ".onrender.com",    # Render subdomain
+    "midnight-tk.com",  # root domain
+    "www.midnight-tk.com"  # www subdomain
 ]
+
 
 
 # Render auto hostname
@@ -39,6 +42,7 @@ for host in os.getenv("EXTRA_CSRF_ORIGINS", "").split(","):
         CSRF_TRUSTED_ORIGINS.append(host)
 
 APPEND_SLASH = True
+
 
 # ---------------------------
 # INSTALLED APPS
@@ -179,3 +183,10 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    }
+}
