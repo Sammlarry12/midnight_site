@@ -84,11 +84,13 @@ import os
 import dj_database_url
 
 # ✅ Database configuration
+
+# Use DATABASE_URL if set (PostgreSQL on Render), otherwise fallback to local SQLite
 DATABASES = {
     "default": dj_database_url.config(
-        default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}",
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",  # fallback to SQLite
         conn_max_age=600,
-        ssl_require=not os.getenv("DEBUG", "False").lower() in ("true", "1"),  # only force SSL in prod
+        ssl_require=True  # only used for PostgreSQL
     )
 }
 
