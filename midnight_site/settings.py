@@ -13,7 +13,11 @@ DEBUG = os.getenv("DEBUG", "True") == "True"
 
 import os
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", ".onrender.com").split(",")
+ALLOWED_HOSTS = [
+    ".onrender.com",      # Render subdomain
+    "midnight-tk.com",    # root domain
+    "www.midnight-tk.com" # www subdomain
+]
 
 
 # Render auto hostname
