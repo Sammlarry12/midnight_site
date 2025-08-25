@@ -14,9 +14,9 @@ DEBUG = os.getenv("DEBUG", "True") == "True"
 import os
 
 ALLOWED_HOSTS = [
-    ".onrender.com",      # Render subdomain
-    "midnight-tk.com",    # root domain
-    "www.midnight-tk.com" # www subdomain
+    ".onrender.com",
+    "midnight-tk.com",
+    "www.midnight-tk.com"
 ]
 
 
@@ -29,6 +29,7 @@ if RENDER_EXTERNAL_HOSTNAME:
 CSRF_TRUSTED_ORIGINS = [
     "https://midnight-tk.com",
     "https://www.midnight-tk.com",
+    "https://midnight-site.onrender.com"
 ]
 if RENDER_EXTERNAL_HOSTNAME:
     CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_EXTERNAL_HOSTNAME}")
