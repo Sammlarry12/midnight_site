@@ -1,10 +1,16 @@
 from django.utils.deprecation import MiddlewareMixin
-from django.contrib.gis.geoip2 import GeoIP2
 from django.core.mail import send_mail
 from django.conf import settings
-from datetime import timedelta
 from django.utils import timezone
+from django.utils.dateparse import parse_datetime
+from datetime import timedelta
 from .models import VisitLog
+
+try:
+    from django.contrib.gis.geoip2 import GeoIP2
+    GEOIP_AVAILABLE = True
+except Exception:
+    GEOIP_AVAILABLE = False
 
 
 def get_client_ip(request):
@@ -18,9 +24,12 @@ def get_client_ip(request):
 class VisitLogMiddleware(MiddlewareMixin):
     def __init__(self, get_response=None):
         super().__init__(get_response)
-        try:
-            self.geo = GeoIP2()
-        except Exception:
+        if GEOIP_AVAILABLE:
+            try:
+                self.geo = GeoIP2()
+            except Exception:
+                self.geo = None
+        else:
             self.geo = None
 
     def process_request(self, request):
@@ -46,21 +55,16 @@ class VisitLogMiddleware(MiddlewareMixin):
         country = city = region = None
         latitude = longitude = None
 
-        try:
-            if ip and self.geo:
+        if ip and self.geo:
+            try:
                 geo_data = self.geo.city(ip)
                 country = geo_data.get("country_name")
                 city = geo_data.get("city")
                 region = geo_data.get("region")
-                if not region and "subdivisions" in geo_data:
-                    try:
-                        region = geo_data["subdivisions"][0]["names"]["en"]
-                    except Exception:
-                        region = None
                 latitude = geo_data.get("latitude")
                 longitude = geo_data.get("longitude")
-        except Exception:
-            pass
+            except Exception:
+                pass
 
         # Save visit log
         log = VisitLog.objects.create(
@@ -79,7 +83,9 @@ class VisitLogMiddleware(MiddlewareMixin):
         last_sent = request.session.get(visitor_key)
         now = timezone.now()
 
-        if not last_sent or now - timezone.datetime.fromisoformat(last_sent) > timedelta(hours=1):
+        last_sent_dt = parse_datetime(last_sent) if last_sent else None
+
+        if not last_sent_dt or now - last_sent_dt > timedelta(hours=1):
             subject = f"New Visitor from {country or 'Unknown'} ({ip})"
             message = (
                 f"IP: {log.ip}\n"
@@ -106,4 +112,3 @@ class VisitLogMiddleware(MiddlewareMixin):
                 pass
 
         return None
-

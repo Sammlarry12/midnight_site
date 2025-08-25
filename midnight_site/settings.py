@@ -80,13 +80,18 @@ WSGI_APPLICATION = "midnight_site.wsgi.application"
 # ---------------------------
 # DATABASE
 # ---------------------------
+import os
+import dj_database_url
+
+# ✅ Database configuration
 DATABASES = {
     "default": dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",  # local fallback
+        default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}",
         conn_max_age=600,
-        ssl_require=False,
+        ssl_require=not os.getenv("DEBUG", "False").lower() in ("true", "1"),  # only force SSL in prod
     )
 }
+
 
 # ---------------------------
 # TIMEZONE
@@ -117,12 +122,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ---------------------------
 # EMAIL SETTINGS (use env vars)
 # ---------------------------
+from decouple import config
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", "sammlarry321@gmail.com")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", "ycxrssklqcsxxetq")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 ADMIN_EMAILS = [
