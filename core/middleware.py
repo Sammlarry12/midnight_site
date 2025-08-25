@@ -4,13 +4,8 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from datetime import timedelta
+import requests
 from .models import VisitLog
-
-try:
-    from django.contrib.gis.geoip2 import GeoIP2
-    GEOIP_AVAILABLE = True
-except Exception:
-    GEOIP_AVAILABLE = False
 
 
 def get_client_ip(request):
@@ -21,17 +16,22 @@ def get_client_ip(request):
     return request.META.get("REMOTE_ADDR")
 
 
-class VisitLogMiddleware(MiddlewareMixin):
-    def __init__(self, get_response=None):
-        super().__init__(get_response)
-        if GEOIP_AVAILABLE:
-            try:
-                self.geo = GeoIP2()
-            except Exception:
-                self.geo = None
-        else:
-            self.geo = None
+def get_geo_data(ip):
+    """Fetch geo info for an IP using ipapi.co API."""
+    try:
+        response = requests.get(f"https://ipapi.co/{ip}/json/", timeout=3)
+        data = response.json()
+        country = data.get("country_name")
+        region = data.get("region")
+        city = data.get("city")
+        latitude = data.get("latitude")
+        longitude = data.get("longitude")
+        return country, region, city, latitude, longitude
+    except Exception:
+        return None, None, None, None, None
 
+
+class VisitLogMiddleware(MiddlewareMixin):
     def process_request(self, request):
         path = request.path.lower()
 
@@ -51,20 +51,8 @@ class VisitLogMiddleware(MiddlewareMixin):
         if settings.DEBUG and ip in ["127.0.0.1", "::1"]:
             ip = "8.8.8.8"  # Fake IP for dev testing
 
-        # Defaults
-        country = city = region = None
-        latitude = longitude = None
-
-        if ip and self.geo:
-            try:
-                geo_data = self.geo.city(ip)
-                country = geo_data.get("country_name")
-                city = geo_data.get("city")
-                region = geo_data.get("region")
-                latitude = geo_data.get("latitude")
-                longitude = geo_data.get("longitude")
-            except Exception:
-                pass
+        # 🔹 Fetch geo data from ipapi
+        country, region, city, latitude, longitude = get_geo_data(ip)
 
         # 🔹 Only log once per hour per IP
         one_hour_ago = timezone.now() - timedelta(hours=1)
@@ -82,7 +70,7 @@ class VisitLogMiddleware(MiddlewareMixin):
                 user_agent=request.META.get("HTTP_USER_AGENT", ""),
             )
         else:
-            log = None  # No new log created
+            log = None
 
         # ✅ One email per IP per hour
         visitor_key = f"visitor_email_last_sent_{ip}"
