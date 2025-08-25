@@ -2,7 +2,6 @@ from django.utils.deprecation import MiddlewareMixin
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
-from django.utils.dateparse import parse_datetime
 from datetime import timedelta
 import requests
 from .models import VisitLog
@@ -21,12 +20,13 @@ def get_geo_data(ip):
     try:
         response = requests.get(f"https://ipapi.co/{ip}/json/", timeout=3)
         data = response.json()
-        country = data.get("country_name")
-        region = data.get("region")
-        city = data.get("city")
-        latitude = data.get("latitude")
-        longitude = data.get("longitude")
-        return country, region, city, latitude, longitude
+        return (
+            data.get("country_name"),
+            data.get("region"),
+            data.get("city"),
+            data.get("latitude"),
+            data.get("longitude"),
+        )
     except Exception:
         return None, None, None, None, None
 
@@ -35,7 +35,7 @@ class VisitLogMiddleware(MiddlewareMixin):
     def process_request(self, request):
         path = request.path.lower()
 
-        # ❌ Skip admin, static, media, api, and assets
+        # Skip admin, static, media, api, and asset files
         if (
             path.startswith("/admin")
             or path.startswith("/static")
@@ -45,19 +45,26 @@ class VisitLogMiddleware(MiddlewareMixin):
         ):
             return None
 
+        ua = request.META.get("HTTP_USER_AGENT", "").lower()
+        # Skip known bots/crawlers
+        if any(keyword in ua for keyword in ["bot", "crawl", "spider"]):
+            return None
+
         ip = get_client_ip(request)
 
-        # 🔹 Only override localhost IP in DEBUG mode
+        # Only override localhost IP in DEBUG mode
         if settings.DEBUG and ip in ["127.0.0.1", "::1"]:
             ip = "8.8.8.8"  # Fake IP for dev testing
 
-        # 🔹 Fetch geo data from ipapi
+        # Fetch geo data
         country, region, city, latitude, longitude = get_geo_data(ip)
 
-        # 🔹 Only log once per hour per IP
+        # Check if we already logged this IP in the last hour
         one_hour_ago = timezone.now() - timedelta(hours=1)
         recent_log_exists = VisitLog.objects.filter(ip=ip, timestamp__gte=one_hour_ago).exists()
+        recent_email_exists = VisitLog.objects.filter(ip=ip, email_sent=True, timestamp__gte=one_hour_ago).exists()
 
+        # Only create a log if not recently logged
         if not recent_log_exists:
             log = VisitLog.objects.create(
                 ip=ip,
@@ -68,42 +75,38 @@ class VisitLogMiddleware(MiddlewareMixin):
                 longitude=longitude,
                 path=request.path,
                 user_agent=request.META.get("HTTP_USER_AGENT", ""),
+                email_sent=False  # initially false
             )
         else:
             log = None
 
-        # ✅ One email per IP per hour
-        visitor_key = f"visitor_email_last_sent_{ip}"
-        last_sent = request.session.get(visitor_key)
-        now = timezone.now()
+        # Send email only once per IP per hour
+        if log and not recent_email_exists:
+            subject = f"New Visitor from {country or 'Unknown'} ({ip})"
+            message = (
+                f"IP: {log.ip}\n"
+                f"Country: {log.country}\n"
+                f"City: {log.city}\n"
+                f"Region: {log.region}\n"
+                f"Latitude: {log.latitude}\n"
+                f"Longitude: {log.longitude}\n"
+                f"Path: {log.path}\n"
+                f"User Agent: {log.user_agent}\n"
+                f"Timestamp: {log.timestamp}\n"
+            )
 
-        last_sent_dt = parse_datetime(last_sent) if last_sent else None
-
-        if not last_sent_dt or now - last_sent_dt > timedelta(hours=1):
-            if log:  # Only send email if a new log was created
-                subject = f"New Visitor from {country or 'Unknown'} ({ip})"
-                message = (
-                    f"IP: {log.ip}\n"
-                    f"Country: {log.country}\n"
-                    f"City: {log.city}\n"
-                    f"Region: {log.region}\n"
-                    f"Latitude: {log.latitude}\n"
-                    f"Longitude: {log.longitude}\n"
-                    f"Path: {log.path}\n"
-                    f"User Agent: {log.user_agent}\n"
-                    f"Timestamp: {log.timestamp}\n"
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    settings.ADMIN_EMAILS,
+                    fail_silently=True,
                 )
-
-                try:
-                    send_mail(
-                        subject,
-                        message,
-                        settings.DEFAULT_FROM_EMAIL,
-                        settings.ADMIN_EMAILS,
-                        fail_silently=True,
-                    )
-                    request.session[visitor_key] = now.isoformat()
-                except Exception:
-                    pass
+                # mark email_sent True in DB
+                log.email_sent = True
+                log.save(update_fields=["email_sent"])
+            except Exception:
+                pass
 
         return None
