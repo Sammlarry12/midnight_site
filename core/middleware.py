@@ -66,17 +66,23 @@ class VisitLogMiddleware(MiddlewareMixin):
             except Exception:
                 pass
 
-        # Save visit log
-        log = VisitLog.objects.create(
-            ip=ip,
-            country=country,
-            city=city,
-            region=region,
-            latitude=latitude,
-            longitude=longitude,
-            path=request.path,
-            user_agent=request.META.get("HTTP_USER_AGENT", ""),
-        )
+        # 🔹 Only log once per hour per IP
+        one_hour_ago = timezone.now() - timedelta(hours=1)
+        recent_log_exists = VisitLog.objects.filter(ip=ip, timestamp__gte=one_hour_ago).exists()
+
+        if not recent_log_exists:
+            log = VisitLog.objects.create(
+                ip=ip,
+                country=country,
+                city=city,
+                region=region,
+                latitude=latitude,
+                longitude=longitude,
+                path=request.path,
+                user_agent=request.META.get("HTTP_USER_AGENT", ""),
+            )
+        else:
+            log = None  # No new log created
 
         # ✅ One email per IP per hour
         visitor_key = f"visitor_email_last_sent_{ip}"
@@ -86,29 +92,30 @@ class VisitLogMiddleware(MiddlewareMixin):
         last_sent_dt = parse_datetime(last_sent) if last_sent else None
 
         if not last_sent_dt or now - last_sent_dt > timedelta(hours=1):
-            subject = f"New Visitor from {country or 'Unknown'} ({ip})"
-            message = (
-                f"IP: {log.ip}\n"
-                f"Country: {log.country}\n"
-                f"City: {log.city}\n"
-                f"Region: {log.region}\n"
-                f"Latitude: {log.latitude}\n"
-                f"Longitude: {log.longitude}\n"
-                f"Path: {log.path}\n"
-                f"User Agent: {log.user_agent}\n"
-                f"Timestamp: {log.timestamp}\n"
-            )
-
-            try:
-                send_mail(
-                    subject,
-                    message,
-                    settings.DEFAULT_FROM_EMAIL,
-                    settings.ADMIN_EMAILS,
-                    fail_silently=True,
+            if log:  # Only send email if a new log was created
+                subject = f"New Visitor from {country or 'Unknown'} ({ip})"
+                message = (
+                    f"IP: {log.ip}\n"
+                    f"Country: {log.country}\n"
+                    f"City: {log.city}\n"
+                    f"Region: {log.region}\n"
+                    f"Latitude: {log.latitude}\n"
+                    f"Longitude: {log.longitude}\n"
+                    f"Path: {log.path}\n"
+                    f"User Agent: {log.user_agent}\n"
+                    f"Timestamp: {log.timestamp}\n"
                 )
-                request.session[visitor_key] = now.isoformat()
-            except Exception:
-                pass
+
+                try:
+                    send_mail(
+                        subject,
+                        message,
+                        settings.DEFAULT_FROM_EMAIL,
+                        settings.ADMIN_EMAILS,
+                        fail_silently=True,
+                    )
+                    request.session[visitor_key] = now.isoformat()
+                except Exception:
+                    pass
 
         return None
