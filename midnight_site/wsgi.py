@@ -13,5 +13,13 @@ except Exception as e:
     import sys
     print(f"Migration failed: {e}", file=sys.stderr)
 
+    # ✅ Collect static files automatically on startup
+try:
+    call_command("collectstatic", interactive=False, verbosity=0)
+except Exception as e:
+    import sys
+    print(f"Collectstatic failed: {e}", file=sys.stderr)
+
+
 application = get_wsgi_application()
 
