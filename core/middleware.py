@@ -5,6 +5,9 @@ from django.utils import timezone
 from datetime import timedelta
 import requests
 from .models import VisitLog
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def get_client_ip(request):
@@ -19,23 +22,25 @@ def get_geo_data(ip):
     """Fetch geo info for an IP using ipapi.co API."""
     try:
         response = requests.get(f"https://ipapi.co/{ip}/json/", timeout=3)
-        data = response.json()
-        return (
-            data.get("country_name"),
-            data.get("region"),
-            data.get("city"),
-            data.get("latitude"),
-            data.get("longitude"),
-        )
-    except Exception:
-        return None, None, None, None, None
+        if response.status_code == 200:
+            data = response.json()
+            return (
+                data.get("country_name"),
+                data.get("region"),
+                data.get("city"),
+                data.get("latitude"),
+                data.get("longitude"),
+            )
+    except Exception as e:
+        logger.warning(f"Geo lookup failed: {e}")
+    return None, None, None, None, None
 
 
 class VisitLogMiddleware(MiddlewareMixin):
     def process_request(self, request):
         path = request.path.lower()
 
-        # Skip admin, static, media, api, and assets
+        # Skip admin, static, media, API, and asset requests
         if (
             path.startswith("/admin")
             or path.startswith("/static")
@@ -60,7 +65,7 @@ class VisitLogMiddleware(MiddlewareMixin):
         recent_log_exists = VisitLog.objects.filter(ip=ip, timestamp__gte=one_hour_ago).exists()
 
         if not recent_log_exists:
-            log = VisitLog.objects.create(
+            VisitLog.objects.create(
                 ip=ip,
                 country=country,
                 city=city,
@@ -70,39 +75,18 @@ class VisitLogMiddleware(MiddlewareMixin):
                 path=request.path,
                 user_agent=request.META.get("HTTP_USER_AGENT", ""),
             )
-        else:
-            log = None
 
-        # Email throttling using session
-        visitor_key = f"visitor_email_last_sent_{ip}"
-        last_sent = request.session.get(visitor_key)
-        now = timezone.now()
-        last_sent_dt = last_sent and timezone.datetime.fromisoformat(last_sent)
-
-        if log and (not last_sent_dt or now - last_sent_dt > timedelta(hours=1)):
-            # Send email
-            subject = f"New Visitor from {country or 'Unknown'} ({ip})"
-            message = (
-                f"IP: {log.ip}\n"
-                f"Country: {log.country}\n"
-                f"City: {log.city}\n"
-                f"Region: {log.region}\n"
-                f"Latitude: {log.latitude}\n"
-                f"Longitude: {log.longitude}\n"
-                f"Path: {log.path}\n"
-                f"User Agent: {log.user_agent}\n"
-                f"Timestamp: {log.timestamp}\n"
-            )
-            try:
-                send_mail(
-                    subject,
-                    message,
-                    settings.DEFAULT_FROM_EMAIL,
-                    settings.ADMIN_EMAILS,
-                    fail_silently=True,
-                )
-                request.session[visitor_key] = now.isoformat()
-            except Exception:
-                pass
+            # Send email only in DEBUG mode (local)
+            if settings.DEBUG:
+                try:
+                    send_mail(
+                        f"New Visitor (DEV) from {country or 'Unknown'} ({ip})",
+                        f"IP: {ip}\nCountry: {country}\nCity: {city}\nRegion: {region}\nTime: {timezone.now()}",
+                        settings.DEFAULT_FROM_EMAIL,
+                        settings.ADMIN_EMAILS,
+                        fail_silently=True,
+                    )
+                except Exception as e:
+                    logger.warning(f"Email send failed: {e}")
 
         return None
