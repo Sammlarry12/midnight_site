@@ -40,7 +40,7 @@ class VisitLogMiddleware(MiddlewareMixin):
     def process_request(self, request):
         path = request.path.lower()
 
-        # Skip admin, static, media, API, and asset requests
+        # Skip admin, static, media, and asset requests
         if (
             path.startswith("/admin")
             or path.startswith("/static")
@@ -56,7 +56,7 @@ class VisitLogMiddleware(MiddlewareMixin):
 
         ip = get_client_ip(request)
         if settings.DEBUG and ip in ["127.0.0.1", "::1"]:
-            ip = "8.8.8.8"  # fake IP for dev testing
+            ip = "8.8.8.8"  # fake IP for local testing
 
         country, region, city, latitude, longitude = get_geo_data(ip)
 
@@ -76,17 +76,18 @@ class VisitLogMiddleware(MiddlewareMixin):
                 user_agent=request.META.get("HTTP_USER_AGENT", ""),
             )
 
-            # Send email only in DEBUG mode (local)
-            if settings.DEBUG:
-                try:
-                    send_mail(
-                        f"New Visitor (DEV) from {country or 'Unknown'} ({ip})",
-                        f"IP: {ip}\nCountry: {country}\nCity: {city}\nRegion: {region}\nTime: {timezone.now()}",
-                        settings.DEFAULT_FROM_EMAIL,
-                        settings.ADMIN_EMAILS,
-                        fail_silently=True,
-                    )
-                except Exception as e:
-                    logger.warning(f"Email send failed: {e}")
+            # ✅ Send email notification in all environments
+            try:
+                send_mail(
+                    f"🌍 New Visitor from {country or 'Unknown'} ({ip})",
+                    f"IP: {ip}\nCountry: {country}\nCity: {city}\nRegion: {region}\n"
+                    f"Latitude: {latitude}\nLongitude: {longitude}\nPath: {request.path}\nTime: {timezone.now()}",
+                    settings.DEFAULT_FROM_EMAIL,
+                    settings.ADMIN_EMAILS,
+                    fail_silently=False,
+                )
+                logger.info(f"Visitor email sent successfully for {ip}")
+            except Exception as e:
+                logger.warning(f"Email send failed: {e}")
 
         return None

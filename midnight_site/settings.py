@@ -158,7 +158,7 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", "sammlarry321@gmail.com")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", "ycxrssklqcsxxetq")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", "jleubnjobbllfxxi")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 ADMIN_EMAILS = [
