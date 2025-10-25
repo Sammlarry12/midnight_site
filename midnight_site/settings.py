@@ -164,6 +164,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 ADMIN_EMAILS = [
     "joeboy53963@gmail.com",
     "esbwoi@gmail.com",
+    "gbolahansalvador37@gmail.com",
 ]
 
 # ---------------------------
